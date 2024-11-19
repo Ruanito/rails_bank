@@ -40,6 +40,9 @@ jobs:
   test:
     runs-on: ubuntu-latest
 
+    env:
+      JWT_SECRET: ${{ secrets.JWT_SECRET }}
+
     # services:
     #  redis:
     #    image: redis
