@@ -40,6 +40,9 @@ jobs:
   test:
     runs-on: ubuntu-latest
 
+    env:
+      RAILS_MASTER_KEY: ${{ secrets.RAILS_MASTER_KEY }}
+
     # services:
     #  redis:
     #    image: redis
@@ -58,6 +61,12 @@ jobs:
         with:
           ruby-version: .ruby-version
           bundler-cache: true
+
+      - name: Debug Master Key
+        run: echo ${#RAILS_MASTER_KEY}
+
+      - name: Set Rails master key
+        run: echo $RAILS_MASTER_KEY > config/master.key
 
       - name: Run tests
         env:
