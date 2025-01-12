@@ -1,4 +1,13 @@
 class UsersController < ApplicationController
+  def show
+    user = User.find(params[:id])
+
+    if user.present?
+      render json: user, status: :ok
+    else
+      render status: :not_found
+    end
+  end
   def create
     user = User.new(user_params)
 
