@@ -1,5 +1,5 @@
 class AccountsController < ApplicationController
-  before_action :set_user, only: [ :show, :create ]
+  before_action :set_user, only: [ :index, :create ]
   def create
     account = @current_user.accounts.create({ balance: 0 })
 
@@ -10,7 +10,7 @@ class AccountsController < ApplicationController
     end
   end
 
-  def show
+  def index
     accounts = @current_user.accounts
 
     render json: accounts, status: :ok
