@@ -4,12 +4,14 @@ class TransactionsController < ApplicationController
   def create
     account = @current_user.accounts.find_by(id: params[:account_id])
 
-    @transaction = account.add_transaction(transaction_type: transaction_params[:transaction_type], amount: transaction_params[:amount].to_i)
+    ActiveRecord::Base.transaction do
+      @transaction = account.add_transaction(transaction_type: transaction_params[:transaction_type], amount: transaction_params[:amount].to_i)
 
-    if @transaction.save
-      render json: @transaction, status: :created
-    else
-      render json: @transaction.errors, status: :unprocessable_entity
+      if @transaction.save
+        render json: @transaction, status: :created
+      else
+        render json: @transaction.errors, status: :unprocessable_entity
+      end
     end
   end
 
