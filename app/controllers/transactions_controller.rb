@@ -4,22 +4,18 @@ class TransactionsController < ApplicationController
   def create
     account = @current_user.accounts.find_by(id: params[:account_id])
 
-    amount = params[:transaction][:amount].to_i
-    transaction_type = params[:transaction][:transaction_type]
-
-    case transaction_type
-    when "deposit"
-      account.update(balance: account.balance + amount)
-    when "withdraw"
-      account.update(balance: account.balance - amount)
-    end
-
-    @transaction = account.transactions.create(transaction_type: transaction_type, amount: amount)
+    @transaction = account.add_transaction(transaction_type: transaction_params[:transaction_type], amount: transaction_params[:amount].to_i)
 
     if @transaction.save
       render json: @transaction, status: :created
     else
       render json: @transaction.errors, status: :unprocessable_entity
     end
+  end
+
+  private
+
+  def transaction_params
+    params.expect(transaction: [ :transaction_type, :amount ])
   end
 end
