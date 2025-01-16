@@ -51,3 +51,5 @@ group :development, :test do
 
   gem "pry"
 end
+
+gem "active_model_serializers"
